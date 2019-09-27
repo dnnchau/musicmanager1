@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop	
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+ 	http://www.springframework.org/schema/tx	
+ 	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<context:component-scan
+		base-package="musicmgr" />
+	<mvc:annotation-driven />
+	<!-- bean definitions go here -->
+	<!-- Database Configurations -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="org.mariadb.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/musicmanager1" />
+		<property name="username" value="dnnchau" />
+		<property name="password" value="123456" />
+	</bean>
+
+	<!-- Hibernate 5 SessionFactory Bean definition -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties"
+			ref="hibernateProperties" />
+		<property name="annotatedClasses" ref="annotatedClasses" />
+	</bean>
+	<!-- Class mapping -->
+	<bean id="annotatedClasses"
+		class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list>
+				<value>musicmgr.model.Song</value>
+				<value>musicmgr.model.Genre</value>
+				<value>musicmgr.model.Composer</value>
+				<value>musicmgr.model.Singer</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="hibernateProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<value>
+				<![CDATA[
+				cache.provider_class=org.hibernate.cache.internal.NoCacheProvider
+				hibernate.show_sql=true
+				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+ 				hibernate.id.new_generator_mappings=false		
+				]]>
+			</value>
+		</property>
+	</bean>
+	<context:annotation-config />
+	<tx:annotation-driven proxy-target-class="true"
+		transaction-manager="txManager" />
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="songDao"
+		class="musicmgr.dao.impl.SongDAOImpl">
+	</bean>
+	<bean id="songService"
+		class="musicmgr.service.impl.SongServiceImpl">
+	</bean>
+	
+	<bean id="genreDao"
+		class="musicmgr.dao.impl.GenreDAOImpl">
+	</bean>
+	<bean id="genreService"
+		class="musicmgr.service.impl.GenreServiceImpl">
+	</bean>
+	
+	<bean id="composerDao"
+		class="musicmgr.dao.impl.ComposerDAOImpl">
+	</bean>
+	<bean id="composerService"
+		class="musicmgr.service.impl.ComposerServiceImpl">
+	</bean>
+	
+	<bean id="singerDao"
+		class="musicmgr.dao.impl.SingerDAOImpl">
+	</bean>
+	<bean id="singerService"
+		class="musicmgr.service.impl.SingerServiceImpl">
+	</bean>
+
+
+	<!-- Declare a view resolver -->
+	<bean id="viewResolver" p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver" />
+
+</beans>
