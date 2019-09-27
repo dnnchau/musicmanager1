@@ -167,7 +167,7 @@ public class SongServiceImpl implements SongService {
 				Singer currentSinger = singerService.getSinger(Integer.valueOf(value));
 				if (currentSinger == null) {
 					throw new Exception("Singer doesn't exist! " + value);
-				}
+				} 
 				song.setSinger(currentSinger);
 			}
 		}
