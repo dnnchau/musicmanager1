@@ -8,11 +8,9 @@ import musicmgr.model.Song;
 public interface SingerDAO {
 	List<Singer> getAllSinger() throws Exception;
 
-	public int countAllSinger() throws Exception;
+	public Singer getSinger(Long singerID) throws Exception;
 
-	public Singer getSinger(Integer singerID) throws Exception;
-
-	public void addSinger(Singer singer) throws Exception;
+	public Long addSinger(Singer singer) throws Exception;
 
 	public void updateSinger(Singer singer) throws Exception;
 

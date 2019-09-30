@@ -31,14 +31,14 @@ public class SongDAOImpl implements SongDAO {
 		return session.createQuery("FROM Song").list();
 	}
 
-	public Song getSong(Integer songID) throws Exception {
+	public Song getSong(Long songID) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
 		return session.get(Song.class, songID);
 	}
 
-	public void addSong(Song song) throws Exception {
+	public Long addSong(Song song) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(song);
+		  return (Long) session.save(song); 
 	}
 
 	public void updateSong(Song song) throws Exception {
@@ -58,7 +58,7 @@ public class SongDAOImpl implements SongDAO {
 		return query.list();
 	}
 
-	public List<Song> searchSongbyID(Integer songID) throws Exception {
+	public List<Song> searchSongbyID(Long songID) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
 		Query<Song> query = session.createQuery("FROM Song WHERE songID LIKE :songID");
 		query.setParameter("songID", songID);

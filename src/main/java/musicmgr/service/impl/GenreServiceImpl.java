@@ -16,14 +16,6 @@ public class GenreServiceImpl implements GenreService {
 	private GenreDAO genreDAO;
 	private final static Logger logger = Logger.getLogger(GenreServiceImpl.class);
 
-	public GenreServiceImpl(GenreDAO genreDAO) {
-		this.genreDAO = genreDAO;
-	}
-
-	public GenreDAO getGenreDAO() {
-		return genreDAO;
-	}
-
 	@Override
 	public List<Genre> getAllGenre() throws Exception {
 		logger.debug("Call method getAllGenre in GenreDao from GenreService");
@@ -36,13 +28,7 @@ public class GenreServiceImpl implements GenreService {
 	}
 
 	@Override
-	public int countAllGenre() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Genre getGenre(Integer genreID) throws Exception {
+	public Genre getGenre(Long genreID) throws Exception {
 		logger.debug("Call method getGenre in GenreDao from GenreService");
 		try {
 			return genreDAO.getGenre(genreID);
@@ -64,7 +50,7 @@ public class GenreServiceImpl implements GenreService {
 	}
 
 	@Override
-	public void add(LinkedHashMap<String, Object> obj) throws Exception {
+	public Long add(LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method addGenres on GenresDao from GenresSerVice");
 		try {
 			Genre genre = new Genre();
@@ -73,6 +59,7 @@ public class GenreServiceImpl implements GenreService {
 				setGenreValue(genre, key, obj.get(key));
 			}
 			genreDAO.addGenre(genre);
+			return genre.getGenreId();
 		} catch (Exception e) {
 			logger.error("Failed to add Genre: ", e);
 			throw e;
@@ -80,7 +67,7 @@ public class GenreServiceImpl implements GenreService {
 	}
 
 	@Override
-	public void update(int genreID, LinkedHashMap<String, Object> obj) throws Exception {
+	public void update(Long genreID, LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method updateGenre in GenreDao from GenreService");
 		try {
 			logger.debug("Edit Genre with genreID: " + genreID);
@@ -101,7 +88,7 @@ public class GenreServiceImpl implements GenreService {
 	}
 
 	@Override
-	public void remove(int genreID) throws Exception {
+	public void remove(Long genreID) throws Exception {
 		logger.debug("Call method removeGenre in GenreDao from GenreService");
 		try {
 			Genre obj = genreDAO.getGenre(genreID);

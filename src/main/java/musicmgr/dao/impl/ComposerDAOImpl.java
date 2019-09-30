@@ -29,21 +29,15 @@ public class ComposerDAOImpl implements ComposerDAO {
 	}
 
 	@Override
-	public int countAllComposer() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Composer getComposer(Integer composerID) throws Exception {
+	public Composer getComposer(Long composerID) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
 		return session.get(Composer.class, composerID);
 	}
 
 	@Override
-	public void addComposer(Composer composer) throws Exception {
+	public Long addComposer(Composer composer) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(composer);
+		return (Long)session.save(composer);
 
 	}
 

@@ -41,13 +41,13 @@ public class ComposerController {
 			headers.add("Number of Recodes Found", String.valueOf(list.size()));
 			return new ResponseEntity<List<Composer>>(list, headers, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
-			return new ResponseEntity<List<Composer>>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed when get all composer", e);
+			return new ResponseEntity<List<Composer>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@RequestMapping(value = "/getcomposer/{composerID}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Composer> getcomposer(@PathVariable("composerID") int composerID) {
+	public ResponseEntity<Composer> getcomposer(@PathVariable("composerID") Long composerID) {
 		logger.info("Starting get composer by ID!");
 		try {
 			Composer composer = composerService.getComposer(composerID);
@@ -58,8 +58,8 @@ public class ComposerController {
 			logger.debug("Get composer successfully");
 			return new ResponseEntity<Composer>(composer, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
-			return new ResponseEntity<Composer>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed when get composer by composerID: " + composerID, e);
+			return new ResponseEntity<Composer>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -72,13 +72,14 @@ public class ComposerController {
 			logger.debug("Add composer successfully");
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.CREATED);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
+			logger.error("Failed when add composer", e);
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/updatecomposer/{composerID}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<JSONObject> updateComposer(@PathVariable("composerID") int composerID, @RequestBody Object obj) {
+	public ResponseEntity<JSONObject> updateComposer(@PathVariable("composerID") Long composerID,
+			@RequestBody Object obj) {
 		logger.info("Starting to update composer!");
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -86,25 +87,25 @@ public class ComposerController {
 			logger.info("Update composer successfully");
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
+			logger.error("Failed when update composer by composerID:" + composerID, e);
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/removecomposer/{composerID}", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<String> removecomposer(@PathVariable("composerID") int composerID) {
+	public ResponseEntity<String> removecomposer(@PathVariable("composerID") Long composerID) {
 		logger.info("Starting to delete composer request!");
 		try {
 			composerService.remove(composerID);
 			logger.info("Delete composer successfully!");
 			return new ResponseEntity<String>("Remove composer successfully!", HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
+			logger.error("Failed when delete composer by composerID: " + composerID, e);
 			return new ResponseEntity<String>("Failed to remove composer: " + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@RequestMapping(value = "/searchcomposer/{composerName}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Composer>> searchcomposer(@PathVariable("composerName") String composerName) {
 		logger.info("Starting search composer!");
@@ -117,8 +118,8 @@ public class ComposerController {
 			logger.debug("Search composer successfully");
 			return new ResponseEntity<List<Composer>>(composer, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Failed to search composer", e);
-			return new ResponseEntity<List<Composer>>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed to search composer by composerName: " + composerName, e);
+			return new ResponseEntity<List<Composer>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

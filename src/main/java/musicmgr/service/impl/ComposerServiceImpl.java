@@ -28,13 +28,7 @@ public class ComposerServiceImpl implements ComposerService {
 	}
 
 	@Override
-	public int countAllComposer() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Composer getComposer(Integer composerID) throws Exception {
+	public Composer getComposer(Long composerID) throws Exception {
 		logger.debug("Call method getComposer in ComposerDao from ComposerService");
 		try {
 			return composerDAO.getComposer(composerID);
@@ -45,7 +39,7 @@ public class ComposerServiceImpl implements ComposerService {
 	}
 
 	@Override
-	public void add(LinkedHashMap<String, Object> obj) throws Exception {
+	public Long add(LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method addComposer on ComposerDao from ComposerSerVice");
 		try {
 			Composer composer = new Composer();
@@ -54,6 +48,7 @@ public class ComposerServiceImpl implements ComposerService {
 				setComposerValue(composer, key, obj.get(key));
 			}
 			composerDAO.addComposer(composer);
+			return composer.getComposerID();
 		} catch (Exception e) {
 			logger.error("Failed to add Composer: ", e);
 			throw e;
@@ -61,7 +56,7 @@ public class ComposerServiceImpl implements ComposerService {
 	}
 
 	@Override
-	public void update(int composerID, LinkedHashMap<String, Object> obj) throws Exception {
+	public void update(Long composerID, LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method updateComposer in ComposerDao from ComposerService");
 		try {
 			logger.debug("Edit Composer with composerID: " + composerID);
@@ -82,7 +77,7 @@ public class ComposerServiceImpl implements ComposerService {
 	}
 
 	@Override
-	public void remove(int composerID) throws Exception {
+	public void remove(Long composerID) throws Exception {
 		logger.debug("Call method removeComposer in ComposerDao from ComposerService");
 		try {
 			Composer obj = composerDAO.getComposer(composerID);

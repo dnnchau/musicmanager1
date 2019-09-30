@@ -29,21 +29,15 @@ public class SingerDAOImpl implements SingerDAO {
 	}
 
 	@Override
-	public int countAllSinger() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Singer getSinger(Integer singerID) throws Exception {
+	public Singer getSinger(Long singerID) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
 		return session.get(Singer.class, singerID);
 	}
 
 	@Override
-	public void addSinger(Singer singer) throws Exception {
+	public Long addSinger(Singer singer) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(singer);
+		return (Long)session.save(singer);
 	}
 
 	@Override

@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import musicmgr.dao.SongDAO;
 import musicmgr.model.Composer;
 import musicmgr.model.Genre;
-import musicmgr.model.Song;
 import musicmgr.model.Singer;
+import musicmgr.model.Song;
 import musicmgr.service.ComposerService;
 import musicmgr.service.GenreService;
 import musicmgr.service.SingerService;
@@ -30,22 +30,6 @@ public class SongServiceImpl implements SongService {
 
 	private final static Logger logger = Logger.getLogger(SongServiceImpl.class);
 
-	public SongDAO getSongDAO() {
-		return songDAO;
-	}
-
-	public void setSongDAO(SongDAO songDAO) {
-		this.songDAO = songDAO;
-	}
-
-	public SongServiceImpl(SongDAO songDAO, GenreService genreSerivce, ComposerService composerSerivce,
-			SingerService singerService) {
-		this.songDAO = songDAO;
-		this.genreSerivce = genreSerivce;
-		this.composerSerivce = composerSerivce;
-		this.singerService = singerService;
-	}
-
 	public List<Song> getAllSong() throws Exception {
 		logger.debug("Call method getAllSong in SongDao from SongService");
 		try {
@@ -57,7 +41,7 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public Song getSong(Integer songID) throws Exception {
+	public Song getSong(Long songID) throws Exception {
 		logger.debug("Call method getSong in SongDao from SongService");
 		try {
 			return songDAO.getSong(songID);
@@ -68,7 +52,7 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public void add(LinkedHashMap<String, Object> obj) throws Exception {
+	public Long add(LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method addSong in SongDao from SongService");
 		try {
 			Song song = new Song();
@@ -76,15 +60,17 @@ public class SongServiceImpl implements SongService {
 			for (String key : songKey) {
 				setSongValue(song, key, obj.get(key));
 			}
+			//return songDAO.addSong(song);
 			songDAO.addSong(song);
+			return song.getSongID();
 		} catch (Exception e) {
-			logger.error("Failed to add Song: ", e);
+			logger.error("Failed to add Song ", e);
 			throw e;
 		}
 	}
 
 	@Override
-	public void update(int songID, LinkedHashMap<String, Object> obj) throws Exception {
+	public void update(Long songID, LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method updateSong in SongDao from SongService");
 		try {
 			logger.debug("Edit Song with songID: " + songID);
@@ -105,7 +91,7 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public void remove(int songID) throws Exception {
+	public void remove(Long songID) throws Exception {
 		logger.debug("Call method deleteSong in SongDao from SongService");
 		try {
 			Song obj = songDAO.getSong(songID);
@@ -132,7 +118,7 @@ public class SongServiceImpl implements SongService {
 	}
 
 	@Override
-	public List<Song> searchSongbyID(Integer songID) throws Exception {
+	public List<Song> searchSongbyID(Long songID) throws Exception {
 		logger.debug("Call method searchSongbyID in SongDao from SongService");
 		try {
 			return songDAO.searchSongbyID(songID);
@@ -145,29 +131,26 @@ public class SongServiceImpl implements SongService {
 	private void setSongValue(Song song, String keyParam, Object songValue) throws Exception {
 		if (songValue != null) {
 			String value = songValue.toString().trim();
-
 			String str = songDAO.getNameSongDAO().toString();
-
 			if (str.contains(value) == false) {
-
 				if ("songName".equals(keyParam) && value != null) {
 					song.setSongName(value);
 				} else if ("lyrics".equals(keyParam) && value != null) {
 					song.setLyrics(value);
 				} else if ("genreID".equals(keyParam)) {
-					Genre currentGenre = genreSerivce.getGenre(Integer.valueOf(value));
+					Genre currentGenre = genreSerivce.getGenre(Long.valueOf(value));
 					if (currentGenre == null) {
 						throw new Exception("Genre doesn't exist id = " + value);
 					}
 					song.setGenre(currentGenre);
 				} else if ("composerID".equals(keyParam)) {
-					Composer currentComposer = composerSerivce.getComposer(Integer.valueOf(value));
+					Composer currentComposer = composerSerivce.getComposer(Long.valueOf(value));
 					if (currentComposer == null) {
 						throw new Exception("Composer doesn't exist! " + value);
 					}
 					song.setComposer(currentComposer);
 				} else if ("singerID".equals(keyParam)) {
-					Singer currentSinger = singerService.getSinger(Integer.valueOf(value));
+					Singer currentSinger = singerService.getSinger(Long.valueOf(value));
 					if (currentSinger == null) {
 						throw new Exception("Singer doesn't exist! " + value);
 					}

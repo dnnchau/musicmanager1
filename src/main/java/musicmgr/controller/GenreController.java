@@ -41,13 +41,13 @@ public class GenreController {
 			headers.add("Number of Recodes Found", String.valueOf(list.size()));
 			return new ResponseEntity<List<Genre>>(list, headers, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
-			return new ResponseEntity<List<Genre>>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed when get all genre", e);
+			return new ResponseEntity<List<Genre>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@RequestMapping(value = "/getgenre/{genreID}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Genre> getgenre(@PathVariable("genreID") int genreID) {
+	public ResponseEntity<Genre> getgenre(@PathVariable("genreID") Long genreID) {
 		logger.info("Starting get genre by ID!");
 		try {
 			Genre genre = genreService.getGenre(genreID);
@@ -58,13 +58,13 @@ public class GenreController {
 			logger.debug("Get genre successfully");
 			return new ResponseEntity<Genre>(genre, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
-			return new ResponseEntity<Genre>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed when get genre by genreID: " + genreID, e);
+			return new ResponseEntity<Genre>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@RequestMapping(value="/addgenre", method = RequestMethod.POST, produces="application/json")
-	public ResponseEntity<JSONObject> addGenre(@RequestBody Object obj){
+
+	@RequestMapping(value = "/addgenre", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<JSONObject> addGenre(@RequestBody Object obj) {
 		logger.info("Starting to add genre!");
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -72,13 +72,13 @@ public class GenreController {
 			logger.debug("Add genre successfully");
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.CREATED);
 		} catch (Exception e) {
-			logger.error("Error", e);
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR); 
-		}		
+			logger.error("Failed when add genre", e);
+			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
-	
+
 	@RequestMapping(value = "/updategenre/{genreID}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<JSONObject> updateGenre(@PathVariable("genreID") int genreID, @RequestBody Object obj) {
+	public ResponseEntity<JSONObject> updateGenre(@PathVariable("genreID") Long genreID, @RequestBody Object obj) {
 		logger.info("Starting to update genre!");
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -86,40 +86,40 @@ public class GenreController {
 			logger.info("Update genre successfully");
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
+			logger.error("Failed when update genre by genreID: " + genreID, e);
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/removegenre/{genreID}", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<String> removeGenre(@PathVariable("genreID") int genreID) {
+	public ResponseEntity<String> removeGenre(@PathVariable("genreID") Long genreID) {
 		logger.info("Starting to delete genre request!");
 		try {
 			genreService.remove(genreID);
 			logger.info("Delete genre successfully!");
 			return new ResponseEntity<String>("Remove genre successfully!", HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
+			logger.error("Failed when delete genre by genreID: " + genreID, e);
 			return new ResponseEntity<String>("Failed to remove genre: " + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@RequestMapping(value="/searchgenre/{genreName}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Genre>> searchGenre(@PathVariable("genreName") String genreName){
+
+	@RequestMapping(value = "/searchgenre/{genreName}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<Genre>> searchGenre(@PathVariable("genreName") String genreName) {
 		logger.info("Starting search genre");
 		try {
 			List<Genre> genre = genreService.searchGenre(genreName);
-			if(genre == null) {
+			if (genre == null) {
 				logger.warn("Not genre in list");
 				return new ResponseEntity<List<Genre>>(HttpStatus.NOT_FOUND);
 			}
 			logger.debug("Search genre successfully");
 			return new ResponseEntity<List<Genre>>(genre, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Failed to search Genre", e);
-			return new ResponseEntity<List<Genre>>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed to search Genre by genreName: " + genreName, e);
+			return new ResponseEntity<List<Genre>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 }

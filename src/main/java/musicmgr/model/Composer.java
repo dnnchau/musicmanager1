@@ -13,7 +13,7 @@ public class Composer {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "composerID")
-	private Integer composerID;
+	private Long composerID;
 	@Column(name = "composerName")
 	private String composerName;
 	@Column(name = "composerDesc")
@@ -22,7 +22,7 @@ public class Composer {
 	public Composer() {
 	}
 
-	public Composer(Integer composerID, String composerName, String composerDesc) {
+	public Composer(Long composerID, String composerName, String composerDesc) {
 		super();
 		this.composerID = composerID;
 		this.composerName = composerName;
@@ -30,11 +30,11 @@ public class Composer {
 	}
 
 	
-	public Integer getComposerID() {
+	public Long getComposerID() {
 		return composerID;
 	}
 
-	public void setComposerID(Integer composerID) {
+	public void setComposerID(Long composerID) {
 		this.composerID = composerID;
 	}
 

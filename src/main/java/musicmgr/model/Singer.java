@@ -13,7 +13,7 @@ public class Singer {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "singerID")
-	private Integer singerID;
+	private Long singerID;
 	@Column(name = "singerName")
 	private String singerName;
 	@Column(name = "singerDesc")
@@ -22,18 +22,18 @@ public class Singer {
 	public Singer() {
 	}
 
-	public Singer(Integer singerID, String singerName, String singerDesc) {
+	public Singer(Long singerID, String singerName, String singerDesc) {
 		super();
 		this.singerID = singerID;
 		this.singerName = singerName;
 		this.singerDesc = singerDesc;
 	}
 
-	public Integer getSingerID() {
+	public Long getSingerID() {
 		return singerID;
 	}
 
-	public void setSingerID(Integer singerID) {
+	public void setSingerID(Long singerID) {
 		this.singerID = singerID;
 	}
 

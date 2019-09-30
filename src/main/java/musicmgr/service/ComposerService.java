@@ -9,15 +9,13 @@ import musicmgr.model.Song;
 public interface ComposerService {
 	public List<Composer> getAllComposer() throws Exception;
 
-	public int countAllComposer() throws Exception;
+	Composer getComposer(Long composerID) throws Exception;
 
-	Composer getComposer(Integer composerID) throws Exception;
+	public Long add(LinkedHashMap<String, Object> obj) throws Exception;
 
-	public void add(LinkedHashMap<String, Object> obj) throws Exception;
+	public void update(Long composerID, LinkedHashMap<String, Object> obj) throws Exception;
 
-	public void update(int composerID, LinkedHashMap<String, Object> obj) throws Exception;
-
-	public void remove(int composerID) throws Exception;
+	public void remove(Long composerID) throws Exception;
 
 	public List<Composer> searchComposer(String composerName) throws Exception;
 }

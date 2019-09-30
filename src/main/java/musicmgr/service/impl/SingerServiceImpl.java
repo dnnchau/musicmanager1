@@ -16,10 +16,6 @@ public class SingerServiceImpl implements SingerService {
 	private SingerDAO singerDAO;
 	private final static Logger logger = Logger.getLogger(SingerServiceImpl.class);
 
-	public SingerServiceImpl(SingerDAO singerDAO) {
-		this.singerDAO = singerDAO;
-	}
-
 	@Override
 	public List<Singer> getAllSinger() throws Exception {
 		logger.debug("Call method getAllSinger in SingerDao from SingerService");
@@ -32,13 +28,7 @@ public class SingerServiceImpl implements SingerService {
 	}
 
 	@Override
-	public int countAllSinger() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Singer getSinger(Integer singerID) throws Exception {
+	public Singer getSinger(Long singerID) throws Exception {
 		logger.debug("Call method getSinger in SingerDao from SingerService");
 		try {
 			return singerDAO.getSinger(singerID);
@@ -49,7 +39,7 @@ public class SingerServiceImpl implements SingerService {
 	}
 
 	@Override
-	public void add(LinkedHashMap<String, Object> obj) throws Exception {
+	public Long add(LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method addSing in SingerDao from SingerService");
 		try {
 			Singer singer = new Singer();
@@ -58,6 +48,7 @@ public class SingerServiceImpl implements SingerService {
 				setSingerValue(singer, key, obj.get(key));
 			}
 			singerDAO.addSinger(singer);
+			return singer.getSingerID();
 		} catch (Exception e) {
 			logger.error("Failed to add Singer: ", e);
 			throw e;
@@ -65,7 +56,7 @@ public class SingerServiceImpl implements SingerService {
 	}
 
 	@Override
-	public void update(int singerID, LinkedHashMap<String, Object> obj) throws Exception {
+	public void update(Long singerID, LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method updateSinger in SingerDao from SingerService");
 		try {
 			logger.debug("Edit Singer with singerID: " + singerID);
@@ -86,7 +77,7 @@ public class SingerServiceImpl implements SingerService {
 	}
 
 	@Override
-	public void remove(int singerID) throws Exception {
+	public void remove(Long singerID) throws Exception {
 		logger.debug("Call method removeSinger in SingerDao from SingerService");
 		try {
 			Singer obj = singerDAO.getSinger(singerID);

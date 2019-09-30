@@ -7,11 +7,9 @@ import musicmgr.model.Composer;
 public interface ComposerDAO {
 	List<Composer> getAllComposer() throws Exception;
 
-	public int countAllComposer() throws Exception;
+	public Composer getComposer(Long somposerID) throws Exception;
 
-	public Composer getComposer(Integer somposerID) throws Exception;
-
-	public void addComposer(Composer composer) throws Exception;
+	public Long addComposer(Composer composer) throws Exception;
 
 	public void updateComposer(Composer composer) throws Exception;
 

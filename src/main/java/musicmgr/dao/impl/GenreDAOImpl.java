@@ -37,21 +37,15 @@ public class GenreDAOImpl implements GenreDAO {
 	}
 
 	@Override
-	public int countAllGenre() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Genre getGenre(Integer genreID) throws Exception {
+	public Genre getGenre(Long genreID) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
 		return session.get(Genre.class, genreID);
 	}
 
 	@Override
-	public void addGenre(Genre genre) throws Exception {
+	public Long addGenre(Genre genre) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
-		session.save(genre);
+		return (Long)session.save(genre);
 
 	}
 

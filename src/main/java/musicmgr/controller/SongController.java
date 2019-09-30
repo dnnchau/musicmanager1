@@ -35,32 +35,32 @@ public class SongController {
 		try {
 			List<Song> list = songService.getAllSong();
 			if (list == null) {
-				logger.warn("Not instance in list !!!!!!!!");
+				logger.warn("Not instance in list !");
 				return new ResponseEntity<List<Song>>(HttpStatus.NOT_FOUND);
 			}
 			logger.debug("Get all song successfully");
 			headers.add("Number of Recodes Found", String.valueOf(list.size()));
 			return new ResponseEntity<List<Song>>(list, headers, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
-			return new ResponseEntity<List<Song>>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed when get all song", e);
+			return new ResponseEntity<List<Song>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/getsong/{songID}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Song> getSong(@PathVariable("songID") int songID) {
+	public ResponseEntity<Song> getSong(@PathVariable("songID") Long songID) {
 		logger.info("Starting get song by ID!");
 		try {
 			Song song = songService.getSong(songID);
 			if (song == null) {
-				logger.warn("Not song in list");
+				logger.warn("Not song in list!");
 				return new ResponseEntity<Song>(HttpStatus.NOT_FOUND);
 			}
 			logger.debug("Get song successfully");
 			return new ResponseEntity<Song>(song, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
-			return new ResponseEntity<Song>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed when get song by songID: " + songID, e);
+			return new ResponseEntity<Song>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -73,13 +73,13 @@ public class SongController {
 			logger.info("Add song successfully");
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
+			logger.error("Failed when add song", e);
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/updatesong/{songID}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<JSONObject> updateSong(@PathVariable("songID") int songID, @RequestBody Object obj) {
+	public ResponseEntity<JSONObject> updateSong(@PathVariable("songID") Long songID, @RequestBody Object obj) {
 		logger.info("Starting to update song!");
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -87,20 +87,20 @@ public class SongController {
 			logger.info("Update song successfully");
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
+			logger.error("Faild when update song by songID: " + songID, e);
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/removesong/{songID}", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<String> removeSong(@PathVariable("songID") int songID) {
+	public ResponseEntity<String> removeSong(@PathVariable("songID") Long songID) {
 		logger.info("Starting to delete song request!");
 		try {
 			songService.remove(songID);
 			logger.info("Delete song successfully!");
 			return new ResponseEntity<String>("Delete song successfully!", HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error", e);
+			logger.error("Failed when delete song by songID: " + songID, e);
 			return new ResponseEntity<String>("Failed to delete song: " + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -112,14 +112,45 @@ public class SongController {
 		try {
 			List<Song> song = songService.searchSongbyName(songName);
 			if (song == null) {
+				logger.warn("Not song in list!");
+				return new ResponseEntity<List<Song>>(HttpStatus.NOT_FOUND);
+			}
+			logger.debug("Search song successfully");
+			return new ResponseEntity<List<Song>>(song, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error("Failed to search Song by songName" + songName, e);
+			return new ResponseEntity<List<Song>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@RequestMapping(value = "/searchsongbyid/{songID}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<Song>> searchSongbyID(@PathVariable("songID") Long songID) {
+		logger.info("Starting search song!");
+		try {
+			List<Song> song = songService.searchSongbyID(songID);
+			if (song == null) {
 				logger.warn("Not song in list");
 				return new ResponseEntity<List<Song>>(HttpStatus.NOT_FOUND);
 			}
 			logger.debug("Search song successfully");
 			return new ResponseEntity<List<Song>>(song, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Failed to search Song", e);
-			return new ResponseEntity<List<Song>>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed to search Song by songID:" + songID, e);
+			return new ResponseEntity<List<Song>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	/*
+	 * @RequestMapping(value = "/getnameallsong", method = RequestMethod.GET,
+	 * produces = "application/json") public ResponseEntity<List<Song>>
+	 * getsongbyname() { logger.info("Starting get all song!"); headers = new
+	 * HttpHeaders(); try { List<Song> list = songService.getNameSong(); if (list ==
+	 * null) { logger.warn("Not instance in list !!!!!!!!"); return new
+	 * ResponseEntity<List<Song>>(HttpStatus.NOT_FOUND); }
+	 * logger.debug("Get all song successfully");
+	 * headers.add("Number of Recodes Found", String.valueOf(list.size())); return
+	 * new ResponseEntity<List<Song>>(list, headers, HttpStatus.OK); } catch
+	 * (Exception e) { logger.error("Error", e); return new
+	 * ResponseEntity<List<Song>>(HttpStatus.INTERNAL_SERVER_ERROR); } }
+	 */
 }

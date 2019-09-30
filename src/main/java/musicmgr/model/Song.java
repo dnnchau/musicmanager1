@@ -17,7 +17,7 @@ public class Song {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "songID")
-	private Integer SongID;
+	private Long SongID;
 	@Column(name = "songName")
 	private String songName;
 	@Column(name = "lyrics")
@@ -38,7 +38,7 @@ public class Song {
 	public Song() {
 	}
 
-	public Song(Integer songID, String songName, String lyrics, Genre genre, Composer composer, Singer singer) {
+	public Song(Long songID, String songName, String lyrics, Genre genre, Composer composer, Singer singer) {
 		super();
 		SongID = songID;
 		this.songName = songName;
@@ -48,11 +48,11 @@ public class Song {
 		this.singer = singer;
 	}
 
-	public Integer getSongID() {
+	public Long getSongID() {
 		return SongID;
 	}
 
-	public void setSongID(Integer songID) {
+	public void setSongID(Long songID) {
 		SongID = songID;
 	}
 

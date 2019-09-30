@@ -8,9 +8,9 @@ public interface SongDAO {
 
 	List<Song> getAllSong() throws Exception;
 
-	public Song getSong(Integer songID) throws Exception;
+	public Song getSong(Long songID) throws Exception;
 
-	public void addSong(Song song) throws Exception;
+	public Long addSong(Song song) throws Exception;
 
 	public void updateSong(Song song) throws Exception;
 
@@ -18,7 +18,7 @@ public interface SongDAO {
 
 	public List<Song> searchSongbyName(String songName) throws Exception;
 
-	public List<Song> searchSongbyID(Integer songID) throws Exception;
+	public List<Song> searchSongbyID(Long songID) throws Exception;
 
 	public List<Song> getNameSongDAO() throws Exception;
 }

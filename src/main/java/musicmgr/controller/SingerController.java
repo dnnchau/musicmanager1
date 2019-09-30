@@ -27,7 +27,7 @@ public class SingerController {
 	private HttpHeaders headers;
 	private final static Logger logger = Logger.getLogger(SingerController.class);
 
-	@RequestMapping(value = "/getsinger", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getallsinger", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Singer>> getAllSingers() {
 		logger.info("Starting get all singer!");
 		headers = new HttpHeaders();
@@ -41,13 +41,13 @@ public class SingerController {
 			headers.add("Number of Recodes Found", String.valueOf(list.size()));
 			return new ResponseEntity<List<Singer>>(list, headers, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
-			return new ResponseEntity<List<Singer>>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed when get all singer", e);
+			return new ResponseEntity<List<Singer>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/getsinger/{singerID}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Singer> getSinger(@PathVariable("singerID") int singerID) {
+	public ResponseEntity<Singer> getSinger(@PathVariable("singerID") Long singerID) {
 		logger.info("Starting get singer by ID!");
 		try {
 			Singer singer = singerService.getSinger(singerID);
@@ -58,8 +58,8 @@ public class SingerController {
 			logger.debug("Get singer successfully");
 			return new ResponseEntity<Singer>(singer, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
-			return new ResponseEntity<Singer>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed when get singer by singerID: " + singerID, e);
+			return new ResponseEntity<Singer>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -72,13 +72,13 @@ public class SingerController {
 			logger.info("Add singer successfully");
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
+			logger.error("Failed when add singer", e);
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/updatesinger/{singerID}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<JSONObject> updateSinger(@PathVariable("singerID") int singerID, @RequestBody Object obj) {
+	public ResponseEntity<JSONObject> updateSinger(@PathVariable("singerID") Long singerID, @RequestBody Object obj) {
 		logger.info("Starting to update singer!");
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -86,20 +86,20 @@ public class SingerController {
 			logger.info("Update singer successfully");
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
+			logger.error("Failed when update singer by singerID: " + singerID, e);
 			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/removesinger/{singerID}", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<String> removeSinger(@PathVariable("singerID") int singerID) {
+	public ResponseEntity<String> removeSinger(@PathVariable("singerID") Long singerID) {
 		logger.info("Starting to remove singer request!");
 		try {
 			singerService.remove(singerID);
 			logger.info("Delete singer successfully!");
 			return new ResponseEntity<String>("Remove singer successfully!", HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Error!!", e);
+			logger.error("Failed when delete singer by singerID" + singerID, e);
 			return new ResponseEntity<String>("Failed to remove singer: " + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -117,8 +117,8 @@ public class SingerController {
 			logger.debug("Search singer successfully");
 			return new ResponseEntity<List<Singer>>(singer, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.error("Failed to search singer", e);
-			return new ResponseEntity<List<Singer>>(HttpStatus.BAD_REQUEST);
+			logger.error("Failed to search singer by singerName: " + singerName, e);
+			return new ResponseEntity<List<Singer>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
