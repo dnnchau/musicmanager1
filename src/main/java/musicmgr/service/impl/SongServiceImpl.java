@@ -60,9 +60,10 @@ public class SongServiceImpl implements SongService {
 			for (String key : songKey) {
 				setSongValue(song, key, obj.get(key));
 			}
-			//return songDAO.addSong(song);
-			songDAO.addSong(song);
-			return song.getSongID();
+			return songDAO.addSong(song);
+			/*
+			 * songDAO.addSong(song); return song.getSongID();
+			 */
 		} catch (Exception e) {
 			logger.error("Failed to add Song ", e);
 			throw e;

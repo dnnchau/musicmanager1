@@ -47,8 +47,8 @@ public class ComposerServiceImpl implements ComposerService {
 			for (String key : composerKey) {
 				setComposerValue(composer, key, obj.get(key));
 			}
-			composerDAO.addComposer(composer);
-			return composer.getComposerID();
+			return composerDAO.addComposer(composer);
+			
 		} catch (Exception e) {
 			logger.error("Failed to add Composer: ", e);
 			throw e;

@@ -58,8 +58,8 @@ public class GenreServiceImpl implements GenreService {
 			for (String key : genreKey) {
 				setGenreValue(genre, key, obj.get(key));
 			}
-			genreDAO.addGenre(genre);
-			return genre.getGenreId();
+			return genreDAO.addGenre(genre);
+			
 		} catch (Exception e) {
 			logger.error("Failed to add Genre: ", e);
 			throw e;

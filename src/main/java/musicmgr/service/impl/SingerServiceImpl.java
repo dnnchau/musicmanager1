@@ -47,8 +47,8 @@ public class SingerServiceImpl implements SingerService {
 			for (String key : singerKey) {
 				setSingerValue(singer, key, obj.get(key));
 			}
-			singerDAO.addSinger(singer);
-			return singer.getSingerID();
+			return singerDAO.addSinger(singer);
+
 		} catch (Exception e) {
 			logger.error("Failed to add Singer: ", e);
 			throw e;
