@@ -38,17 +38,6 @@ public class GenreServiceImpl implements GenreService {
 		}
 	}
 
-	private void setGenreName(Genre genre, String name) throws Exception {
-		if (name != null && !name.isEmpty()) {
-			Genre curentGenres = genreDAO.getGenreByName(name);
-			if (curentGenres != null) {
-				logger.error("Genres" + name + " existed!");
-				throw new Exception("Genres " + name + " existed!");
-			}
-			genre.setGenreName(name);
-		}
-	}
-
 	@Override
 	public Long add(LinkedHashMap<String, Object> obj) throws Exception {
 		logger.debug("Call method addGenres on GenresDao from GenresSerVice");

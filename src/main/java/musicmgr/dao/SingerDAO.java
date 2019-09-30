@@ -3,7 +3,6 @@ package musicmgr.dao;
 import java.util.List;
 
 import musicmgr.model.Singer;
-import musicmgr.model.Song;
 
 public interface SingerDAO {
 	List<Singer> getAllSinger() throws Exception;

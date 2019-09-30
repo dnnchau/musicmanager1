@@ -34,7 +34,7 @@ public class GenreController {
 		try {
 			List<Genre> list = genreService.getAllGenre();
 			if (list == null) {
-				logger.warn("Not instance in list !!!!!!!!");
+				logger.warn("Not instance in list !");
 				return new ResponseEntity<List<Genre>>(HttpStatus.NOT_FOUND);
 			}
 			logger.debug("Get all genre successfully");
@@ -64,30 +64,28 @@ public class GenreController {
 	}
 
 	@RequestMapping(value = "/addgenre", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<JSONObject> addGenre(@RequestBody Object obj) {
+	public ResponseEntity<String> addGenre(@RequestBody Object obj) {
 		logger.info("Starting to add genre!");
-		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			genreService.add((LinkedHashMap<String, Object>) obj);
 			logger.debug("Add genre successfully");
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.CREATED);
+			return new ResponseEntity<String>("Add genre successfully", HttpStatus.CREATED);
 		} catch (Exception e) {
 			logger.error("Failed when add genre", e);
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Failed when add genre", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/updategenre/{genreID}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<JSONObject> updateGenre(@PathVariable("genreID") Long genreID, @RequestBody Object obj) {
+	public ResponseEntity<String> updateGenre(@PathVariable("genreID") Long genreID, @RequestBody Object obj) {
 		logger.info("Starting to update genre!");
-		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			genreService.update(genreID, (LinkedHashMap<String, Object>) obj);
 			logger.info("Update genre successfully");
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
+			return new ResponseEntity<String>("Update genre successfully", HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Failed when update genre by genreID: " + genreID, e);
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Faield to update genre", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

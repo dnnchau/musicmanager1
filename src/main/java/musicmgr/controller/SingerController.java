@@ -34,7 +34,7 @@ public class SingerController {
 		try {
 			List<Singer> list = singerService.getAllSinger();
 			if (list == null) {
-				logger.warn("Not instance in list !!!!!!!!");
+				logger.warn("Not instance in list !");
 				return new ResponseEntity<List<Singer>>(HttpStatus.NOT_FOUND);
 			}
 			logger.debug("Get all singer successfully");
@@ -64,30 +64,28 @@ public class SingerController {
 	}
 
 	@RequestMapping(value = "/addsinger", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<JSONObject> addSinger(@RequestBody Object obj) {
+	public ResponseEntity<String> addSinger(@RequestBody Object obj) {
 		logger.info("Starting add singer!");
-		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			singerService.add((LinkedHashMap<String, Object>) obj);
 			logger.info("Add singer successfully");
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
+			return new ResponseEntity<String>("Add singer successfully", HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Failed when add singer", e);
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Failed when add singer", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/updatesinger/{singerID}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<JSONObject> updateSinger(@PathVariable("singerID") Long singerID, @RequestBody Object obj) {
+	public ResponseEntity<String> updateSinger(@PathVariable("singerID") Long singerID, @RequestBody Object obj) {
 		logger.info("Starting to update singer!");
-		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			singerService.update(singerID, (LinkedHashMap<String, Object>) obj);
 			logger.info("Update singer successfully");
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
+			return new ResponseEntity<String>("Update singer successfully", HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Failed when update singer by singerID: " + singerID, e);
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Faield to update singer", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

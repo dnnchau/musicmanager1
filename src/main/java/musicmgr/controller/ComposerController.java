@@ -34,7 +34,7 @@ public class ComposerController {
 		try {
 			List<Composer> list = composerService.getAllComposer();
 			if (list == null) {
-				logger.warn("Not instance in list !!!!!!!!");
+				logger.warn("Not instance in list !");
 				return new ResponseEntity<List<Composer>>(HttpStatus.NOT_FOUND);
 			}
 			logger.debug("Get all composer successfully");
@@ -64,31 +64,28 @@ public class ComposerController {
 	}
 
 	@RequestMapping(value = "/addcomposer", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<JSONObject> addcomposer(@RequestBody Object obj) {
+	public ResponseEntity<String> addcomposer(@RequestBody Object obj) {
 		logger.info("Starting to add composer!");
-		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			composerService.add((LinkedHashMap<String, Object>) obj);
 			logger.debug("Add composer successfully");
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.CREATED);
+			return new ResponseEntity<String>("Add composer successfully", HttpStatus.CREATED);
 		} catch (Exception e) {
 			logger.error("Failed when add composer", e);
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Failed when add composer", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@RequestMapping(value = "/updatecomposer/{composerID}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<JSONObject> updateComposer(@PathVariable("composerID") Long composerID,
-			@RequestBody Object obj) {
+	public ResponseEntity<String> updateComposer(@PathVariable("composerID") Long composerID, @RequestBody Object obj) {
 		logger.info("Starting to update composer!");
-		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			composerService.update(composerID, (LinkedHashMap<String, Object>) obj);
 			logger.info("Update composer successfully");
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.OK);
+			return new ResponseEntity<String>("Update composer successfully", HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Failed when update composer by composerID:" + composerID, e);
-			return new ResponseEntity<JSONObject>(new JSONObject(result), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Failed to update composer", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
