@@ -20,5 +20,5 @@ public interface SongDAO {
 
 	public List<Song> searchSongbyID(Integer songID) throws Exception;
 
-	public Song getSongByName(String songName) throws Exception;
+	public List<Song> getNameSongDAO() throws Exception;
 }

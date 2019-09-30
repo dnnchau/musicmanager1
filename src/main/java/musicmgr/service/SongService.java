@@ -19,4 +19,8 @@ public interface SongService {
 	public List<Song> searchSongbyName(String songName) throws Exception;
 	
 	public List<Song> searchSongbyID(Integer songID) throws Exception;
+	
+	
+	public List<Song> getNameSong() throws Exception;
+	
 }

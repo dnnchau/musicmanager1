@@ -122,22 +122,4 @@ public class SongController {
 			return new ResponseEntity<List<Song>>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@RequestMapping(value = "/searchsongbyid/{songID}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Song>> searchSongbyID(@PathVariable("songID") Integer songID) {
-		logger.info("Starting search song!");
-		try {
-			List<Song> song = songService.searchSongbyID(songID);
-			if (song == null) {
-				logger.warn("Not song in list");
-				return new ResponseEntity<List<Song>>(HttpStatus.NOT_FOUND);
-			}
-			logger.debug("Search song successfully");
-			return new ResponseEntity<List<Song>>(song, HttpStatus.OK);
-		} catch (Exception e) {
-			logger.error("Failed to search Song", e);
-			return new ResponseEntity<List<Song>>(HttpStatus.BAD_REQUEST);
-		}
-	}
-
 }

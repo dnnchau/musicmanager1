@@ -65,11 +65,10 @@ public class SongDAOImpl implements SongDAO {
 		return query.list();
 	}
 
-	public Song getSongByName(String songName) throws Exception {
+	public List<Song> getNameSongDAO() throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Song> query = session.createQuery("From Song WHERE songName Like :songName");
-		query.setParameter("songName", '%' + songName + '%');
-		return query.uniqueResult();
+		Query<Song> query = session.createQuery("Select songName From Song");
+		return query.list();
 	}
 
 }

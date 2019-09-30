@@ -119,9 +119,7 @@ public class SongServiceImpl implements SongService {
 			throw e;
 		}
 	}
-	
-	
-	
+
 	@Override
 	public List<Song> searchSongbyName(String songName) throws Exception {
 		logger.debug("Call method searchSongbyName in SongDao from SongService");
@@ -132,6 +130,7 @@ public class SongServiceImpl implements SongService {
 			throw e;
 		}
 	}
+
 	@Override
 	public List<Song> searchSongbyID(Integer songID) throws Exception {
 		logger.debug("Call method searchSongbyID in SongDao from SongService");
@@ -146,34 +145,46 @@ public class SongServiceImpl implements SongService {
 	private void setSongValue(Song song, String keyParam, Object songValue) throws Exception {
 		if (songValue != null) {
 			String value = songValue.toString().trim();
-			if ("songName".equals(keyParam) && value != null) {
-				song.setSongName(value);
-				
-			} else if ("lyrics".equals(keyParam) && value != null) {
-				song.setLyrics(value);
-			} else if ("genreID".equals(keyParam)) {
-				Genre currentGenre = genreSerivce.getGenre(Integer.valueOf(value));
-				if (currentGenre == null) {
-					throw new Exception("Genre doesn't exist id = " + value);
+
+			String str = songDAO.getNameSongDAO().toString();
+
+			if (str.contains(value) == false) {
+
+				if ("songName".equals(keyParam) && value != null) {
+					song.setSongName(value);
+				} else if ("lyrics".equals(keyParam) && value != null) {
+					song.setLyrics(value);
+				} else if ("genreID".equals(keyParam)) {
+					Genre currentGenre = genreSerivce.getGenre(Integer.valueOf(value));
+					if (currentGenre == null) {
+						throw new Exception("Genre doesn't exist id = " + value);
+					}
+					song.setGenre(currentGenre);
+				} else if ("composerID".equals(keyParam)) {
+					Composer currentComposer = composerSerivce.getComposer(Integer.valueOf(value));
+					if (currentComposer == null) {
+						throw new Exception("Composer doesn't exist! " + value);
+					}
+					song.setComposer(currentComposer);
+				} else if ("singerID".equals(keyParam)) {
+					Singer currentSinger = singerService.getSinger(Integer.valueOf(value));
+					if (currentSinger == null) {
+						throw new Exception("Singer doesn't exist! " + value);
+					}
+					song.setSinger(currentSinger);
 				}
-				song.setGenre(currentGenre);
-			} else if ("composerID".equals(keyParam)) {
-				Composer currentComposer = composerSerivce.getComposer(Integer.valueOf(value));
-				if (currentComposer == null) {
-					throw new Exception("Composer doesn't exist! " + value);
-				}
-				song.setComposer(currentComposer);
-			} else if ("singerID".equals(keyParam)) {
-				Singer currentSinger = singerService.getSinger(Integer.valueOf(value));
-				if (currentSinger == null) {
-					throw new Exception("Singer doesn't exist! " + value);
-				} 
-				song.setSinger(currentSinger);
 			}
 		}
-
 	}
 
-
-
+	@Override
+	public List<Song> getNameSong() throws Exception {
+		logger.debug("Call method getAllSong in SongDao from SongService");
+		try {
+			return songDAO.getNameSongDAO();
+		} catch (Exception e) {
+			logger.error("Failed to get all Song ", e);
+			throw e;
+		}
+	}
 }
